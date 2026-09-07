@@ -5,7 +5,7 @@ import Symbol from '../assets/gallery/SYMBOL.png'
 const NAV_LINKS = [
   { label: 'Inicio', href: '#' },
   { label: 'Produtos', href: '#Produtos' },
-  { label: 'Sobre nos', href: '#about' },
+  { label: 'Perguntas Frequentes', href: '#faq' },
   { label: 'clientes', href: '#client' },
   { label: 'Contato', href: '#Contato' },
 ]

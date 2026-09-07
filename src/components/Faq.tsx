@@ -1,24 +1,27 @@
 import { useState } from 'react'
 import { Plus, Minus, Sparkles } from 'lucide-react'
+import team from '../assets/gallery/team.jpg'
+
 
 const FAQ_ITEMS = [
   {
-    question: 'What is Paymark?',
+    question: 'O que é Kairos?',
     answer:
-      'Reach, leverages AI-optimized cold email campaigns to elevate your business. We provide tailored strategies that enhance outreach.',
+      'Do grego Kairos é o conceito antigo que representa o momento perfeito, oportuno e certo para algo acontecer. Para nós da Kairós não basta apenas ser ágil, mas entregar a solução certa, na hora certa e com o valor exato que o cliente precisa.',
   },
   {
-    question: 'Is there a limit for cashback I can earn?',
-    answer: 'Substitua por sua resposta real aqui.',
+    question: 'Como funciona o processo de desenvolvimento?',
+    answer: 'Começamos entendendo o seu negócio, seus objetivos e o que a solução precisa alcançar. A partir disso, definimos a melhor abordagem para transformar a ideia em um produto funcional, claro e alinhado às suas necessidades.',
+  },
+   {
+    question: 'Posso solicitar uma proposta para o meu projeto?',
+    answer: 'Sim. Após recebermos as informações sobre o seu projeto, analisamos o escopo, os objetivos e as necessidades do negócio para entender os desafios e definir a melhor solução. A partir dessa análise, apresentamos uma proposta personalizada, considerando as prioridades, a complexidade e as possibilidades do projeto.',
   },
   {
-    question: 'Are there any account fees in Paymark?',
-    answer: 'Substitua por sua resposta real aqui.',
+    question: 'Por que escolher a Kairos?',
+    answer: 'Porque não enxergamos um projeto apenas como desenvolvimento de software. Antes de pensar em tecnologia, buscamos entender o problema, o objetivo do negócio e a experiência que a solução precisa proporcionar. A Kairos une desenvolvimento, design e visão de produto para criar soluções que não apenas funcionam, mas fazem sentido para quem vai utilizá-las.',
   },
-  {
-    question: 'Why should I use Paymark?',
-    answer: 'Substitua por sua resposta real aqui.',
-  },
+ 
 ]
 
 export default function Faq() {
@@ -33,7 +36,7 @@ export default function Faq() {
 
         <div className="mt-12 grid gap-8 md:grid-cols-2 md:items-start">
           <div className="hidden md:flex aspect-square items-center justify-center rounded-xl2 border border-kairos-border bg-gradient-to-br from-kairos-surface to-kairos-bg">
-            <Sparkles size={48} className="text-white/20" />
+            <img src={team} alt="Team" className="h-full w-full object-cover rounded-xl2" />
           </div>
 
           <div className="divide-y divide-kairos-border rounded-xl2 border border-kairos-border">
@@ -59,9 +62,9 @@ export default function Faq() {
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <span className="text-sm text-white/60">Can't find the answer you're looking for?</span>
+          <span className="text-sm text-white/60">Não consegue encontrar a resposta que procura?</span>
           <button className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-kairos-bg hover:bg-white/90 transition-colors">
-            Ask Something
+            Pergunte algo
           </button>
         </div>
       </div>

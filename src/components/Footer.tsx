@@ -1,15 +1,12 @@
 import { Snowflake, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react'
+import Symbolwhite from '../assets/gallery/SYMBOLWHITE.png'
 
 const LINK_COLUMNS = [
   {
     title: 'Pages',
-    links: ['Home', 'About', 'Feature', 'Blog', 'Pricing', 'Integration', 'Contact'],
+    links: ['Inicio', 'Produtos', 'Sobre nós', 'Clientes', 'Contato'],
   },
-  {
-    title: 'Inner Pages',
-    links: ['Pricing single', 'Blog single', 'Integration single'],
-  },
-  {
+   {
     title: 'Utility Pages',
     links: ['Early Access', 'Cookie policy', '404'],
   },
@@ -17,11 +14,11 @@ const LINK_COLUMNS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-kairos-border py-16">
+    <footer id='Contato' className="border-t border-kairos-border py-16">
       <div className="max-w-container mx-auto px-6">
         <div className="grid gap-12 md:grid-cols-[1.3fr_repeat(3,1fr)]">
           <div>
-            <h3 className="text-lg font-medium text-white">Subscribe Newsletter</h3>
+            <h3 className="text-lg font-medium text-white">Receba nosso portfólio.</h3>
             <form
               className="mt-4 flex max-w-sm items-center gap-2 rounded-full border border-kairos-border bg-kairos-surface p-1.5"
               onSubmit={(e) => e.preventDefault()}
@@ -36,13 +33,13 @@ export default function Footer() {
                 type="submit"
                 className="shrink-0 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-kairos-bg hover:bg-white/90 transition-colors"
               >
-                Send Code
+                Fale conosco
               </button>
             </form>
 
             <a href="#" className="mt-8 flex items-center gap-2 text-sm font-medium text-white">
-              <Snowflake size={18} />
-              PAYMARK
+              <img src={Symbolwhite} alt="Kairos" className="h-5 w-auto" />
+              KAIROS
             </a>
           </div>
 
@@ -63,7 +60,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-kairos-border pt-6 sm:flex-row">
-          <p className="text-xs text-white/40">© Copyright 2026. All rights reserved.</p>
+          <p className="text-xs text-white/40">© Copyright 2026. Todos os direitos reservados. CNPJ:  68.848.841/0001 - Razão Social: 68.848.841 Rafael Magalhaes Landim</p>
           <div className="flex gap-3 text-white/50">
             <Facebook size={16} />
             <Instagram size={16} />

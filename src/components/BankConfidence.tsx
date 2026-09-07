@@ -2,7 +2,7 @@ import Code from '../assets/gallery/code.jpg'
 
 export default function BankConfidence() {
   return (
-    <section id="feature" className="py-20 md:py-28">
+    <section id="Produtos" className="py-20 md:py-28">
       <div className="max-w-container mx-auto px-6">
         <div className="text-center">
           <h2 className="text-3xl font-medium text-white sm:text-4xl">Nossos Produtos</h2>
