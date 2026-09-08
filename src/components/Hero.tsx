@@ -5,11 +5,11 @@ import backgroundImg from '../assets/gallery/background.jpg'
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-cover bg-[center_24%] bg-no-repeat pt-32 pb-24 md:pt-44 md:pb-32"
-     style={{ backgroundImage: `url(${backgroundImg})` }}>  
+      style={{ backgroundImage: `url(${backgroundImg})` }}>
 
       {/*degrade do fundo da section*/}
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-kairos-bg to-transparent pointer-events-none" />
-      
+
       <div className="relative max-w-container mx-auto px-6 text-center">
         <h1 className="mx-auto max-w-2xl text-4xl font-medium leading-tight text-white sm:text-5xl md:text-6xl">
           {/*Smart Solutions Built for the Future of Finance*/}
@@ -17,7 +17,7 @@ export default function Hero() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-md text-sm text-white/60 sm:text-base">
-          Tecnologia no tempo do seu crescimento.<br/> Soluções digitais que crescem com você.
+          Tecnologia no tempo do seu crescimento.<br /> Soluções digitais que crescem com você.
         </p>
 
         <form

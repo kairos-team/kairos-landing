@@ -6,7 +6,7 @@ const LINK_COLUMNS = [
     title: 'Pages',
     links: ['Inicio', 'Produtos', 'Sobre nós', 'Clientes', 'Contato'],
   },
-   {
+  {
     title: 'Utility Pages',
     links: ['Early Access', 'Cookie policy', '404'],
   },

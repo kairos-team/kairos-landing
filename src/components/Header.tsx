@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { label: 'Inicio', href: '#' },
   { label: 'Produtos', href: '#Produtos' },
   { label: 'Perguntas Frequentes', href: '#faq' },
-  { label: 'clientes', href: '#client' },
+  { label: 'Clientes', href: '#client' },
   { label: 'Contato', href: '#Contato' },
 ]
 
@@ -33,7 +33,7 @@ export default function Header() {
           href="#cta"
           className="hidden md:inline-flex items-center rounded-full bg-white px-5 py-2.5 text-sm font-medium text-kairos-bg hover:bg-black/90 transition-colors"
         >
-           Fale conosco
+          Fale conosco
         </a>
 
         <button

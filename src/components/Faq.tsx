@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
     question: 'Como funciona o processo de desenvolvimento?',
     answer: 'Começamos entendendo o seu negócio, seus objetivos e o que a solução precisa alcançar. A partir disso, definimos a melhor abordagem para transformar a ideia em um produto funcional, claro e alinhado às suas necessidades.',
   },
-   {
+  {
     question: 'Posso solicitar uma proposta para o meu projeto?',
     answer: 'Sim. Após recebermos as informações sobre o seu projeto, analisamos o escopo, os objetivos e as necessidades do negócio para entender os desafios e definir a melhor solução. A partir dessa análise, apresentamos uma proposta personalizada, considerando as prioridades, a complexidade e as possibilidades do projeto.',
   },
@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
     question: 'Por que escolher a Kairos?',
     answer: 'Porque não enxergamos um projeto apenas como desenvolvimento de software. Antes de pensar em tecnologia, buscamos entender o problema, o objetivo do negócio e a experiência que a solução precisa proporcionar. A Kairos une desenvolvimento, design e visão de produto para criar soluções que não apenas funcionam, mas fazem sentido para quem vai utilizá-las.',
   },
- 
+
 ]
 
 export default function Faq() {

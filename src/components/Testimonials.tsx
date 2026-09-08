@@ -23,7 +23,7 @@ export default function Testimonials() {
     <section id="client" className="py-20 md:py-28">
       <div className="max-w-container mx-auto px-6">
         <h2 className="text-center text-3xl font-medium text-white sm:text-4xl md:text-left">
-         Depoimentos de clientes
+          Depoimentos de clientes
         </h2>
 
         <div className="mt-12 grid gap-8 md:grid-cols-[auto_1fr_auto] md:items-center">
