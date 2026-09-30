@@ -66,6 +66,10 @@ export default function Footer() {
             <a href="/politica-de-privacidade/" className="hover:text-white transition-colors">
               Política de Privacidade
             </a>
+            {' · '}
+            <a href="/termos-de-uso/" className="hover:text-white transition-colors">
+              Termos de Uso
+            </a>
           </p>
           <div className="flex gap-3 text-white/50">
             <Facebook size={16} />
