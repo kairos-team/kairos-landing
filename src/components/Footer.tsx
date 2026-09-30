@@ -60,7 +60,13 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-kairos-border pt-6 sm:flex-row">
-          <p className="text-xs text-white/40">© Copyright 2026. Todos os direitos reservados. CNPJ:  68.848.841/0001 - Razão Social: 68.848.841 Rafael Magalhaes Landim</p>
+          <p className="text-xs text-white/40">
+            © Copyright 2026. Todos os direitos reservados. CNPJ:  68.848.841/0001 - Razão Social: 68.848.841 Rafael Magalhaes Landim
+            {' · '}
+            <a href="/politica-de-privacidade/" className="hover:text-white transition-colors">
+              Política de Privacidade
+            </a>
+          </p>
           <div className="flex gap-3 text-white/50">
             <Facebook size={16} />
             <Instagram size={16} />
