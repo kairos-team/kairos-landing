@@ -132,6 +132,20 @@
         }
       });
 
+      // A troca do código pelo token exige o mesmo redirect_uri que o SDK usou
+      // ao abrir a janela da Meta, e o SDK não o expõe: anotamos da URL aberta.
+      let redirectUri = null;
+      const abrirJanelaOriginal = window.open;
+      window.open = function (url, ...resto) {
+        try {
+          const uri = new URL(url, location.href).searchParams.get('redirect_uri');
+          if (uri) redirectUri = uri;
+        } catch {
+          // URL que não é da Meta: ignora
+        }
+        return abrirJanelaOriginal.call(window, url, ...resto);
+      };
+
       window.fbAsyncInit = () => {
         FB.init({ appId: META_APP_ID, autoLogAppEvents: true, xfbml: true, version: META_GRAPH_VERSION });
       };
@@ -149,6 +163,7 @@
             cliente,
             modo,
             code,
+            redirectUri,
             evento: sessao?.event || null,
             wabaId: sessao?.data?.waba_id || null,
             phoneNumberId: sessao?.data?.phone_number_id || null,
@@ -165,6 +180,7 @@
           return;
         }
         sessao = null;
+        redirectUri = null;
         mostrarStatus('Aguardando a janela da Meta…', 'Siga os passos na janela que abriu. Se ela não apareceu, permita pop-ups para este site.');
 
         const extras = { setup: {}, sessionInfoVersion: '3' };
