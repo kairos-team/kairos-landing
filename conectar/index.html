@@ -143,7 +143,8 @@
         for (let i = 0; i < 20 && !sessao; i++) await esperar(100);
         const resposta = await fetch(KAIROS_CONECTAR_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          // ngrok-skip-browser-warning: evita a tela de aviso do ngrok gratuito (inofensivo fora dele).
+          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
           body: JSON.stringify({
             cliente,
             modo,
