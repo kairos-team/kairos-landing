@@ -33,8 +33,9 @@
         <section id="etapa-escolha" class="mt-10 flex flex-col gap-4">
           <button
             type="button"
+            disabled
             data-modo="coexistencia"
-            class="rounded-xl2 border border-kairos-border bg-kairos-surface p-6 text-left transition-colors hover:border-kairos-accent"
+            class="rounded-xl2 border border-kairos-border bg-kairos-surface p-6 text-left transition-colors hover:border-kairos-accent disabled:cursor-wait disabled:opacity-50 disabled:hover:border-kairos-border"
           >
             <span class="block text-lg font-medium text-white">Já uso o WhatsApp Business no celular</span>
             <span class="mt-2 block text-sm leading-relaxed text-white/70">
@@ -44,8 +45,9 @@
           </button>
           <button
             type="button"
+            disabled
             data-modo="novo"
-            class="rounded-xl2 border border-kairos-border bg-kairos-surface p-6 text-left transition-colors hover:border-kairos-accent"
+            class="rounded-xl2 border border-kairos-border bg-kairos-surface p-6 text-left transition-colors hover:border-kairos-accent disabled:cursor-wait disabled:opacity-50 disabled:hover:border-kairos-border"
           >
             <span class="block text-lg font-medium text-white">Vou usar um número novo</span>
             <span class="mt-2 block text-sm leading-relaxed text-white/70">
@@ -53,6 +55,7 @@
               confirmar o número.
             </span>
           </button>
+          <p id="carregando-sdk" class="text-xs text-white/40">Carregando o login do Facebook…</p>
           <p class="text-xs leading-relaxed text-white/40">
             Ao continuar, você concorda com os
             <a href="/termos-de-uso/" class="text-kairos-accent hover:underline">Termos de Uso</a> e a
@@ -125,8 +128,8 @@
       window.addEventListener('message', (event) => {
         if (!event.origin.endsWith('facebook.com')) return;
         try {
-          const data = JSON.parse(event.data);
-          if (data.type === 'WA_EMBEDDED_SIGNUP') sessao = data;
+          const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+          if (data?.type === 'WA_EMBEDDED_SIGNUP') sessao = data;
         } catch {
           // mensagens que não são JSON não são do Embedded Signup
         }
@@ -146,9 +149,25 @@
         return abrirJanelaOriginal.call(window, url, ...resto);
       };
 
-      window.fbAsyncInit = () => {
+      // Se o clique acontecer antes do SDK terminar de carregar, a janela abre
+      // depois, fora do clique, e o navegador bloqueia o pop-up. Por isso os
+      // botões só são liberados depois do FB.init.
+      let sdkPronto = false;
+      function iniciarSdk() {
+        if (sdkPronto) return;
         FB.init({ appId: META_APP_ID, autoLogAppEvents: true, xfbml: true, version: META_GRAPH_VERSION });
-      };
+        sdkPronto = true;
+        document.querySelectorAll('[data-modo]').forEach((botao) => (botao.disabled = false));
+        document.getElementById('carregando-sdk').classList.add('hidden');
+      }
+      window.fbAsyncInit = iniciarSdk;
+      // O SDK é carregado só aqui, depois do fbAsyncInit existir — se fosse uma
+      // tag <script async> no HTML, ele poderia terminar antes e nunca avisar.
+      const sdk = document.createElement('script');
+      sdk.src = 'https://connect.facebook.net/pt_BR/sdk.js';
+      sdk.async = true;
+      sdk.crossOrigin = 'anonymous';
+      document.body.appendChild(sdk);
 
       const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -168,6 +187,7 @@
             wabaId: sessao?.data?.waba_id || null,
             phoneNumberId: sessao?.data?.phone_number_id || null,
             businessId: sessao?.data?.business_id || null,
+            sessao,
           }),
         });
         const json = await resposta.json().catch(() => ({}));
@@ -175,8 +195,8 @@
       }
 
       function conectar(modo) {
-        if (typeof FB === 'undefined') {
-          mostrarErro('O login do Facebook não carregou. Verifique se algum bloqueador de anúncios está ativo e recarregue a página.');
+        if (!sdkPronto) {
+          mostrarErro('O login do Facebook ainda não carregou. Verifique se algum bloqueador de anúncios está ativo e recarregue a página.');
           return;
         }
         sessao = null;
@@ -222,6 +242,5 @@
         botao.addEventListener('click', () => conectar(botao.dataset.modo));
       });
     </script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js"></script>
   </body>
 </html>
