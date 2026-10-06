@@ -10,6 +10,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         privacidade: resolve(__dirname, 'politica-de-privacidade/index.html'),
         termos: resolve(__dirname, 'termos-de-uso/index.html'),
+        conectar: resolve(__dirname, 'conectar/index.html'),
       },
     },
   },

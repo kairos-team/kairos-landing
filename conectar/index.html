@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="facebook-domain-verification" content="04bgaz8wk4xa9eyhzcwpd5z8455b3u" />
+    <meta name="robots" content="noindex" />
+    <meta
+      name="description"
+      content="Conecte o WhatsApp da sua empresa ao atendimento automatizado da Kairos pela plataforma oficial WhatsApp Business, da Meta."
+    />
+    <title>Conectar WhatsApp | Kairos</title>
+    <link rel="stylesheet" href="/src/index.css" />
+  </head>
+  <body class="bg-kairos-bg">
+    <div class="flex min-h-screen flex-col bg-kairos-bg">
+      <header class="border-b border-kairos-border">
+        <div class="max-w-container mx-auto flex items-center justify-between px-6 py-6 md:px-10">
+          <a href="/" class="flex items-center gap-2 text-sm font-medium tracking-wide text-white"
+            ><img src="/src/assets/gallery/SYMBOLWHITE.png" alt="Kairos" class="h-5 w-auto" />KAIROS</a
+          ><a href="/" class="text-sm text-white/60 hover:text-white transition-colors">Voltar ao site</a>
+        </div>
+      </header>
+      <main class="mx-auto w-full max-w-2xl flex-1 px-6 py-16">
+        <h1 class="text-3xl font-medium text-white md:text-4xl">Conectar o WhatsApp da sua empresa</h1>
+        <p class="mt-4 text-sm leading-relaxed text-white/70">
+          A conexão é feita pela plataforma oficial WhatsApp Business, da Meta. Você vai entrar com a sua conta do
+          Facebook, escolher a sua empresa e autorizar a Kairos a responder as mensagens pelo atendimento
+          automatizado. Leva poucos minutos.
+        </p>
+
+        <!-- Escolha do tipo de conexão -->
+        <section id="etapa-escolha" class="mt-10 flex flex-col gap-4">
+          <button
+            type="button"
+            data-modo="coexistencia"
+            class="rounded-xl2 border border-kairos-border bg-kairos-surface p-6 text-left transition-colors hover:border-kairos-accent"
+          >
+            <span class="block text-lg font-medium text-white">Já uso o WhatsApp Business no celular</span>
+            <span class="mt-2 block text-sm leading-relaxed text-white/70">
+              Mantém o mesmo número e o aplicativo continua funcionando no celular da equipe. No final, você vai
+              escanear um QR code com o WhatsApp Business. Tenha o celular com o número em mãos.
+            </span>
+          </button>
+          <button
+            type="button"
+            data-modo="novo"
+            class="rounded-xl2 border border-kairos-border bg-kairos-surface p-6 text-left transition-colors hover:border-kairos-accent"
+          >
+            <span class="block text-lg font-medium text-white">Vou usar um número novo</span>
+            <span class="mt-2 block text-sm leading-relaxed text-white/70">
+              Para um número que não está em uso no WhatsApp. Você vai receber um código por SMS ou ligação para
+              confirmar o número.
+            </span>
+          </button>
+          <p class="text-xs leading-relaxed text-white/40">
+            Ao continuar, você concorda com os
+            <a href="/termos-de-uso/" class="text-kairos-accent hover:underline">Termos de Uso</a> e a
+            <a href="/politica-de-privacidade/" class="text-kairos-accent hover:underline">Política de Privacidade</a>
+            da Kairos.
+          </p>
+        </section>
+
+        <!-- Mensagem de andamento/resultado -->
+        <section id="etapa-status" class="mt-10 hidden rounded-xl2 border border-kairos-border bg-kairos-surface p-6">
+          <p id="status-titulo" class="text-lg font-medium text-white"></p>
+          <p id="status-texto" class="mt-2 text-sm leading-relaxed text-white/70"></p>
+          <button
+            id="status-voltar"
+            type="button"
+            class="mt-6 hidden text-sm text-kairos-accent hover:underline"
+          >
+            Tentar novamente
+          </button>
+        </section>
+      </main>
+      <footer class="border-t border-kairos-border py-8">
+        <p class="max-w-container mx-auto px-6 text-center text-xs text-white/40">
+          © 2026 Kairos. CNPJ 68.848.841/0001-97.
+        </p>
+      </footer>
+    </div>
+
+    <script type="module">
+      // App "Kairos Atendimento" no Meta for Developers.
+      const META_APP_ID = '1096567199629518';
+      // ID da configuração de Embedded Signup (Facebook Login for Business → Configurações).
+      const META_CONFIG_ID = 'PREENCHER';
+      const META_GRAPH_VERSION = 'v25.0';
+      // Webhook do fluxo "Kairos - Conectar cliente" no n8n. Trocar pelo domínio da VPS quando ela existir.
+      const KAIROS_CONECTAR_URL = 'https://staining-durably-pavestone.ngrok-free.dev/webhook/kairos-conectar';
+      const EMAIL_CONTATO = 'kairostec2025@gmail.com';
+
+      // Qual cliente da Kairos está conectando (vem no link: /conectar/?cliente=invictus).
+      const cliente = new URLSearchParams(location.search).get('cliente') || '';
+
+      const etapaEscolha = document.getElementById('etapa-escolha');
+      const etapaStatus = document.getElementById('etapa-status');
+      const statusTitulo = document.getElementById('status-titulo');
+      const statusTexto = document.getElementById('status-texto');
+      const statusVoltar = document.getElementById('status-voltar');
+
+      function mostrarStatus(titulo, texto, { podeTentarDeNovo = false } = {}) {
+        etapaEscolha.classList.add('hidden');
+        etapaStatus.classList.remove('hidden');
+        statusTitulo.textContent = titulo;
+        statusTexto.textContent = texto;
+        statusVoltar.classList.toggle('hidden', !podeTentarDeNovo);
+      }
+
+      function mostrarErro(texto) {
+        mostrarStatus('Não foi possível concluir a conexão', `${texto} Se o problema continuar, fale com a Kairos em ${EMAIL_CONTATO}.`, {
+          podeTentarDeNovo: true,
+        });
+      }
+
+      statusVoltar.addEventListener('click', () => {
+        etapaStatus.classList.add('hidden');
+        etapaEscolha.classList.remove('hidden');
+      });
+
+      // A janela da Meta avisa por postMessage o resultado e os IDs da conta
+      // (waba_id, phone_number_id) — o FB.login só devolve o código de autorização.
+      let sessao = null;
+      window.addEventListener('message', (event) => {
+        if (!event.origin.endsWith('facebook.com')) return;
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'WA_EMBEDDED_SIGNUP') sessao = data;
+        } catch {
+          // mensagens que não são JSON não são do Embedded Signup
+        }
+      });
+
+      window.fbAsyncInit = () => {
+        FB.init({ appId: META_APP_ID, autoLogAppEvents: true, xfbml: true, version: META_GRAPH_VERSION });
+      };
+
+      const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+
+      async function enviarParaKairos(modo, code) {
+        // O evento da janela às vezes chega logo depois do retorno do login.
+        for (let i = 0; i < 20 && !sessao; i++) await esperar(100);
+        const resposta = await fetch(KAIROS_CONECTAR_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cliente,
+            modo,
+            code,
+            evento: sessao?.event || null,
+            wabaId: sessao?.data?.waba_id || null,
+            phoneNumberId: sessao?.data?.phone_number_id || null,
+            businessId: sessao?.data?.business_id || null,
+          }),
+        });
+        const json = await resposta.json().catch(() => ({}));
+        if (!resposta.ok || !json.ok) throw new Error(json.erro || `HTTP ${resposta.status}`);
+      }
+
+      function conectar(modo) {
+        if (typeof FB === 'undefined') {
+          mostrarErro('O login do Facebook não carregou. Verifique se algum bloqueador de anúncios está ativo e recarregue a página.');
+          return;
+        }
+        sessao = null;
+        mostrarStatus('Aguardando a janela da Meta…', 'Siga os passos na janela que abriu. Se ela não apareceu, permita pop-ups para este site.');
+
+        const extras = { setup: {}, sessionInfoVersion: '3' };
+        if (modo === 'coexistencia') extras.featureType = 'whatsapp_business_app_onboarding';
+
+        // O callback do FB.login não pode ser async.
+        FB.login(
+          (response) => {
+            const code = response.authResponse?.code;
+            if (!code) {
+              if (sessao?.event === 'ERROR') {
+                mostrarErro('A Meta informou um erro durante a conexão.');
+              } else {
+                mostrarStatus('Conexão cancelada', 'A janela foi fechada antes de terminar. Você pode tentar de novo quando quiser.', {
+                  podeTentarDeNovo: true,
+                });
+              }
+              return;
+            }
+            // O código vale só 30 segundos: precisa ir pra Kairos na hora.
+            mostrarStatus('Finalizando a conexão…', 'Só um momento, estamos ativando o atendimento no seu número.');
+            enviarParaKairos(modo, code)
+              .then(() =>
+                mostrarStatus(
+                  'WhatsApp conectado!',
+                  'Pronto. A Kairos vai concluir a configuração do atendimento e avisar você assim que estiver no ar. Pode fechar esta página.',
+                ),
+              )
+              .catch((err) => {
+                console.error(err);
+                mostrarErro('A autorização foi feita, mas não conseguimos finalizar a conexão.');
+              });
+          },
+          { config_id: META_CONFIG_ID, response_type: 'code', override_default_response_type: true, extras },
+        );
+      }
+
+      document.querySelectorAll('[data-modo]').forEach((botao) => {
+        botao.addEventListener('click', () => conectar(botao.dataset.modo));
+      });
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js"></script>
+  </body>
+</html>
